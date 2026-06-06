@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STOPDog Settings</title>
+    <style>
+        :root {
+            --primary-color: #ff4757;
+            --bg-color: #1e1e2e;
+            --card-bg: #2b2b3b;
+            --text-color: #ffffff;
+            --accent-color: #ffcc00;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            width: 320px;
+        }
+
+        .header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #444;
+            margin-bottom: 15px;
+        }
+
+        .header h2 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .section {
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #bbb;
+        }
+
+        input[type="number"], input[type="time"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #181825;
+            color: white;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .toggle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .checkbox-item {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        #saveBtn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            font-size: 15px;
+        }
+
+        #saveBtn:hover {
+            background-color: #ff6b81;
+            transform: translateY(-2px);
+        }
+
+        #status {
+            text-align: center;
+            color: var(--accent-color);
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .footer {
+            margin-top: 15px;
+            font-size: 11px;
+            color: #777;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .footer b { color: var(--accent-color); }
+
+        /* Coming Soon style */
+        option:disabled {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2>🐶 STOPDog Pro</h2>
+    </div>
+
+    <div class="section">
+        <div style="display: flex; gap: 10px;">
+            <div style="flex: 1;">
+                <label>Focus (Mins)</label>
+                <input type="number" id="timeLimit" value="30" min="1">
+            </div>
+            <div style="flex: 1;">
+                <label>Break (Mins)</label>
+                <input type="number" id="breakTimeSec" value="5" min="1">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <label>Choose Your Gatekeeper</label>
+        <select id="dogSelect">
+            <option value="golden_stop.webm">Golden Retriever (High Quality)</option>
+            <option value="pug_yawn.webm">Sleepy Pug (Classic)</option>
+            <option value="husky_stop.webm" disabled>Husky (Coming Soon...)</option>
+            <option value="corgi_stop.webm" disabled>Corgi (Coming Soon...)</option>
+            <option value="shiba_stop.webm" disabled>Shiba Inu (Coming Soon...)</option>
+        </select>
+    </div>
+
+    <div class="section">
+        <div class="toggle-group">
+            <label style="margin:0;">Always Active (24/7)</label>
+            <input type="checkbox" id="alwaysActive">
+        </div>
+        <div id="timeContainer" style="display: flex; gap: 10px; transition: opacity 0.3s;">
+            <div style="flex: 1;">
+                <label>Start Time</label>
+                <input type="time" id="startTime" value="09:00">
+            </div>
+            <div style="flex: 1;">
+                <label>End Time</label>
+                <input type="time" id="endTime" value="18:00">
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <label>Quick Block</label>
+        <div class="checkbox-group">
+            <div class="checkbox-item"><input type="checkbox" class="quick-site" value="youtube.com">YouTube</div>
+            <div class="checkbox-item"><input type="checkbox" class="quick-site" value="facebook.com">Facebook</div>
+            <div class="checkbox-item"><input type="checkbox" class="quick-site" value="instagram.com">Instagram</div>
+            <div class="checkbox-item"><input type="checkbox" class="quick-site" value="tiktok.com">TikTok</div>
+            <div class="checkbox-item"><input type="checkbox" class="quick-site" value="reddit.com">Reddit</div>
+            <div class="checkbox-item"><input type="checkbox" class="quick-site" value="twitter.com">Twitter/X</div>
+        </div>
+        <label style="margin-top:10px;">Custom Blocklist (Comma separated)</label>
+        <textarea id="blockList" rows="2" placeholder="example.com, news.com"></textarea>
+    </div>
+
+    <button id="saveBtn">SAVE & APPLY</button>
+    <div id="status">✅ Settings Saved & Active!</div>
+
+    <div class="footer">
+        <b>Free & No Ads</b> | Privacy First: No data collected.<br>
+        Questions? Contact us:<br>
+        <a href="mailto:groupgroup.it@gmail.com" style="color:var(--primary-color); text-decoration:none;">groupgroup.it@gmail.com</a>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
